@@ -6,10 +6,9 @@ import gzip
 import sys
 
 parser = argparse.ArgumentParser(description='Convert from UAI-08 format to DOT (Graphviz)')
-parser.add_argument('--output', '-o', type=str, 
-        help='File to store the resulting graph in. Default is to add a ".dot" \
-        extension to the input file (replacing .uai, if present). Set this \
-        to "-" to write to stdout.')
+parser.add_argument('--output', '-o', type=str, default='-', 
+        help='File to store the resulting graph in. Set this to "-" to write \
+        to stdout.')
 parser.add_argument('--markov', action='store_true',
         help='Write Markov networks as MRFs rather than factor graphs.')
 parser.add_argument('--fg', action='store_true',
@@ -17,14 +16,6 @@ parser.add_argument('--fg', action='store_true',
 parser.add_argument('file', type=str, 
         help='UAI-08 file to convert.')
 args = parser.parse_args()
-
-outfile = args.output
-if not outfile:
-    outfile = args.file
-    if outfile[-4:].lower() == '.uai':
-        outfile = outfile[:-4] + '.dot'
-    else:
-        outfile = outfile + '.dot'
 
 ############# Parse the UAI file ##############################################
 with gzip.open(args.file) if args.file.endswith('.gz') else open(args.file) as fh:
@@ -51,7 +42,7 @@ elif args.markov:
 if args.output == '-':
     fh = sys.stdout
 else:
-    fh = open(outfile, 'w')
+    fh = open(args.output, 'w')
 
 if mode == 'bayes':
     fh.write('digraph "%s" {\n' % args.file)
