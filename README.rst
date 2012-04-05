@@ -2,6 +2,9 @@
 uai2dot: convert ".uai" graphical models to DOT (Graphviz) format
 =================================================================
 
+Summary
+=======
+
 Visualizing a graphical model is a great way to gain some quick 
 insight into a distribution's structure. This script will parse 
 a model description in the 
@@ -16,6 +19,12 @@ This code is released under the very permissive MIT license,
 so do with it as you please. That said, if you make any fixes or 
 enhancements that might be generally useful, please 
 consider submitting a patch or pull request.
+
+Usage
+=====
+::
+
+   ./uai2dot -o mygraph.dot mygraph.uai
 
 Sample factor graph
 ===================
