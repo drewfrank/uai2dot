@@ -1,4 +1,4 @@
-# uai2dot: convert ".uai" graphical models to DOT (Graphviz) format
+# uai2dot: convert ".uai" graphical models to DOT format
 
 ## Summary
 
