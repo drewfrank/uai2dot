@@ -64,6 +64,6 @@ markov.dot::
 
 markov.png:
 
-.. figure:: examples/markov.png
+.. figure:: raw/master/examples/markov.png
 
    Generated with Graphviz using the "neato" layout.
