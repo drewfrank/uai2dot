@@ -6,7 +6,7 @@ import gzip
 import sys
 
 parser = argparse.ArgumentParser(description='Convert from UAI-08 format to DOT (Graphviz)')
-parser.add_argument('--output', '-o', type=str, default='-', 
+parser.add_argument('--output', '-o', type=str,
         help='File to store the resulting graph in. Set this to "-" to write \
         to stdout.')
 parser.add_argument('--markov', action='store_true',
@@ -39,7 +39,7 @@ elif args.markov:
     mode = 'markov'
     edges = set() # Bookkeeping to avoid adding edges twice.
 
-if args.output == '-':
+if not args.output:
     fh = sys.stdout
 else:
     fh = open(args.output, 'w')
