@@ -12,6 +12,11 @@ used by Graphviz. In addition to Graphviz's own visualization
 algorithms, files in this format are compatible with a variety 
 of other graph visualization packages.
 
+This code is released under the very permissive MIT license, 
+so do with it as you please. That said, if you make any fixes or 
+enhancements that might be generally useful, please 
+consider submitting a patch or pull request.
+
 Sample factor graph
 ===================
 
@@ -52,4 +57,4 @@ markov.png:
 
 .. figure:: examples/markov.png
 
-   Generated with graphviz using the "neato" layout.
+   Generated with Graphviz using the "neato" layout.
