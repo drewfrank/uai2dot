@@ -2,6 +2,7 @@
 
 import argparse
 import itertools
+import gzip
 import sys
 
 parser = argparse.ArgumentParser(description='Convert from UAI-08 format to DOT (Graphviz)')
@@ -28,7 +29,7 @@ elif args.output == '-':
     outfile = sys.stdout
 
 ############# Parse the UAI file ##############################################
-with open(args.file) as f:
+with gzip.open(args.file) if args.file.endswith('.gz') else open(args.file) as f:
     graph_type = f.readline().strip().lower()
     nvar = int(f.readline())
     card = [int(x) for x in f.readline().split()]
