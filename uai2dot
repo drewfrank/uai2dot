@@ -24,19 +24,17 @@ if not outfile:
         outfile = outfile[:-4] + '.dot'
     else:
         outfile = outfile + '.dot'
-elif args.output == '-':
-    outfile = sys.stdout
 
 ############# Parse the UAI file ##############################################
-with open(args.file) as f:
-    graph_type = f.readline().strip().lower()
-    nvar = int(f.readline())
-    card = [int(x) for x in f.readline().split()]
-    nfac = int(f.readline())
+with open(args.file) as fh:
+    graph_type = fh.readline().strip().lower()
+    nvar = int(fh.readline())
+    card = [int(x) for x in fh.readline().split()]
+    nfac = int(fh.readline())
 
     factors = []
     for i in xrange(nfac):
-        line = [int(x) for x in f.readline().split()]
+        line = [int(x) for x in fh.readline().split()]
         factors.append(line[1:])
     # Unless we want to store the actual tables in the DOT file as 
     # metadata, this is as far as we need to read.
@@ -48,28 +46,33 @@ if graph_type == 'bayes' and not args.fg:
 elif args.markov:
     mode = 'markov'
     edges = set() # Bookkeeping to avoid adding edges twice.
-with open(outfile, 'w') as f:
-    if mode == 'bayes':
-        f.write('digraph "%s" {\n' % args.file)
-    else:
-        f.write('graph "%s" {\n' % args.file)
-    f.write('node [shape=circle, fixedsize=true]; ' + 
-            '; '.join('V%d [label=%d]' % (i, i) for i in xrange(nvar)) + ';\n')
+
+if args.output == '-':
+    fh = sys.stdout
+else:
+    fh = open(outfile, 'w')
+
+if mode == 'bayes':
+    fh.write('digraph "%s" {\n' % args.file)
+else:
+    fh.write('graph "%s" {\n' % args.file)
+fh.write('node [shape=circle, fixedsize=true]; ' + 
+        '; '.join('V%d [label=%d]' % (i, i) for i in xrange(nvar)) + ';\n')
+if mode == 'fg':
+    fh.write('node [shape=square, fixedsize=true]; ' + 
+            '; '.join('F%d [label=%d]' % (i, i) for i in xrange(nfac)) + ';\n')
+for i, fac in enumerate(factors):
     if mode == 'fg':
-        f.write('node [shape=square, fixedsize=true]; ' + 
-                '; '.join('F%d [label=%d]' % (i, i) for i in xrange(nfac)) + ';\n')
-    for i, fac in enumerate(factors):
-        if mode == 'fg':
-            for var in fac:
-                f.write('F%d -- V%d;\n' % (i, var))
-        elif mode == 'markov':
-            for v1, v2 in itertools.combinations(fac, 2):
-                if (v1, v2) not in edges:
-                    f.write('V%d -- V%d;\n' % (v1, v2))
-                    edges.add((v1, v2))
-        elif mode == 'bayes':
-            for var in fac[:-1]:
-                f.write('V%d -> V%d;\n' % (var, fac[-1]))
-    f.write('overlap=scale;\n')
-    f.write('label="%s";\n' % args.file)
-    f.write('}')
+        for var in fac:
+            fh.write('F%d -- V%d;\n' % (i, var))
+    elif mode == 'markov':
+        for v1, v2 in itertools.combinations(fac, 2):
+            if (v1, v2) not in edges:
+                fh.write('V%d -- V%d;\n' % (v1, v2))
+                edges.add((v1, v2))
+    elif mode == 'bayes':
+        for var in fac[:-1]:
+            fh.write('V%d -> V%d;\n' % (var, fac[-1]))
+fh.write('overlap=scale;\n')
+fh.write('label="%s";\n' % args.file)
+fh.write('}\n')
