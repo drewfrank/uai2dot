@@ -1,0 +1,15 @@
+graph "markov.uai" {
+node [shape=circle, fixedsize=true]; V0 [label=0]; V1 [label=1]; V2 [label=2]; V3 [label=3];
+node [shape=square, fixedsize=true]; F0 [label=0]; F1 [label=1]; F2 [label=2]; F3 [label=3];
+F0 -- V0;
+F0 -- V1;
+F1 -- V0;
+F1 -- V2;
+F2 -- V1;
+F2 -- V3;
+F3 -- V1;
+F3 -- V2;
+F3 -- V3;
+overlap=scale;
+label="markov.uai";
+}

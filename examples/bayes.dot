@@ -1,0 +1,9 @@
+digraph "bayes.uai" {
+node [shape=circle, fixedsize=true]; V0 [label=0]; V1 [label=1]; V2 [label=2]; V3 [label=3]; V4 [label=4];
+V0 -> V2;
+V1 -> V2;
+V2 -> V4;
+V3 -> V4;
+overlap=scale;
+label="bayes.uai";
+}
